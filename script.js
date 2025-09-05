@@ -6,7 +6,7 @@ let currentUser = null; // Firebase user document
 
 // Constants
 const ADS_REWARD_POINTS = 0.3;
-const TG_TASK_REWARD_POINTS = 1; // Corrected to 1 AS point as per detailed description
+const TG_TASK_REWARD_POINTS = 0.4; // Corrected to 0.4 AS point as per detailed description
 const REFERRER_REWARD_POINTS = 5;
 const REFERRED_USER_BONUS_POINTS = 2;
 const MAX_ADS_DAILY = 200;
