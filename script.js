@@ -1041,7 +1041,7 @@ document.getElementById('withdraw-binance-btn')?.addEventListener('click', async
     }
 
     // Basic ID validation (Binance Pay IDs are usually alphanumeric, 16-20 chars)
-    if (!/^[a-zA-Z0-9]{16,20}$/.test(binancePayId)) {
+    if (!/^[0-9]{16,20}$/.test(binancePayId)) {
         showToast('Invalid Binance Pay ID format. It should be 16-20 alphanumeric characters.', 'error');
         return;
     }
@@ -1127,7 +1127,7 @@ async function requestWithdrawal(method, points, usdValue, recipient) {
         console.warn("To send this message to Telegram channel " + WITHDRAW_CHANNEL_ID + ", you need a backend server (e.g., Firebase Cloud Function, Node.js server) to interact with the Telegram Bot API. Client-side JavaScript cannot do this directly for security reasons, as it would expose your bot's private token.");
         // Example of what would happen on a backend (Pseudocode):
         // (This would be executed on your server, not in this client-side JS)
-        // const botToken = "YOUR_BOT_FATHER_TOKEN"; // Stored securely on your server
+        // const botToken = "8467716343:AAHqCzzgTHZmd7sNkzZjYDKioCW4kayavzQ"; // Stored securely on your server
         // const apiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
         // await fetch(apiUrl, {
         //     method: 'POST',
