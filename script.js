@@ -1041,7 +1041,7 @@ document.getElementById('withdraw-binance-btn')?.addEventListener('click', async
     }
 
     // Basic ID validation (Binance Pay IDs are usually alphanumeric, 16-20 chars)
-    if (!/^[a-zA-Z0-9]{16,20}$/.test(binancePayId)) {
+    if (!/^[0-9]{16,20}$/.test(binancePayId)) {
         showToast('Invalid Binance Pay ID format. It should be 16-20 alphanumeric characters.', 'error');
         return;
     }
