@@ -1,13 +1,13 @@
 // firebaseConfig.js
 // Replace with your actual Firebase project configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID" // Optional
+  apiKey: "AIzaSyD0cSoiwR7o9TK0HjsV6pVUUzKphuvjhKw",
+  authDomain: "asearnhub-8c230.firebaseapp.com",
+  projectId: "asearnhub-8c230",
+  storageBucket: "asearnhub-8c230.firebasestorage.app",
+  messagingSenderId: "84557363534",
+  appId: "1:84557363534:web:e2dddae2394c40de9d861f",
+  measurementId: "G-NEZH5KXF9B"
 };
 
 // Initialize Firebase
