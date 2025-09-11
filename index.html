@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AS Earn Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Telegram Mini Apps SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="header-content">
+                <h1 class="app-title">AS Earn Hub</h1>
+                <!-- Telegram WebApp close button for testing outside Telegram -->
+                <button id="closeWebAppButton" style="display:none; position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 20px;">✖</button>
+            </div>
+        </header>
+
+        <main id="main-content">
+            <!-- Home Section -->
+            <section id="home-section" class="app-section active">
+                <div class="glass-card profile-card">
+                    <div class="profile-avatar-container">
+                        <img id="user-avatar" src="https://via.placeholder.com/60/8e44ad/ffffff?text=U" alt="User Avatar" class="profile-avatar">
+                    </div>
+                    <h2 id="profile-display-name" class="profile-name">Loading...</h2>
+                    <div class="as-points-balance-container">
+                        <span class="balance-label">AS Points:</span>
+                        <span id="as-points-balance" class="as-points-balance">0</span>
+                    </div>
+                </div>
+
+                <div class="glass-card daily-checkin-card">
+                    <h3>Daily Check-in Streak</h3>
+                    <div class="streak-indicator" id="streak-indicator">
+                        <!-- Streak capsules will be dynamically inserted here -->
+                    </div>
+                    <button id="claim-checkin-button" class="action-button primary-button pulsing-button" disabled>Claim Day 1</button>
+                    <p id="checkin-message" class="info-text"></p>
+                </div>
+
+                <div class="glass-card earnings-summary-card">
+                    <h3>Today's Earnings</h3>
+                    <div class="earnings-grid">
+                        <div>
+                            <span class="earning-label">ADS:</span>
+                            <span id="today-ads-earnings">0.0 AS</span>
+                        </div>
+                        <div>
+                            <span class="earning-label">TG Tasks:</span>
+                            <span id="today-tg-tasks-earnings">0.0 AS</span>
+                        </div>
+                        <div>
+                            <span class="earning-label">Referrals:</span>
+                            <span id="today-referrals-earnings">0.0 AS</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADS Task Section -->
+            <section id="ads-section" class="app-section">
+                <div class="glass-card ads-stats-card">
+                    <h3>ADS Tasks</h3>
+                    <div class="ads-metrics-grid">
+                        <div>Daily: <span id="ads-daily-count">0</span>/200</div>
+                        <div>Hourly: <span id="ads-hourly-count">0</span>/25</div>
+                        <div>Lifetime: <span id="ads-lifetime-count">0</span></div>
+                    </div>
+                    <p id="ads-rate-limit-message" class="info-text"></p>
+                </div>
+                <button id="start-ads-task-button" class="action-button primary-button pulsing-button">Start ADS Task</button>
+            </section>
+
+            <!-- Telegram Tasks Section -->
+            <section id="tg-tasks-section" class="app-section">
+                <div class="glass-card">
+                    <h3>Telegram Join Tasks (1 AS Point each)</h3>
+                    <ul class="task-list">
+                        <li id="tg-task-1" class="task-item">
+                            <a href="https://t.me/ASearnhub" target="_blank" class="task-link">Join Channel @ASearnhub</a>
+                            <button class="action-button small-button check-task-button" data-task-id="tg_join_1" data-channel-link="https://t.me/ASearnhub">Check</button>
+                            <span class="task-status"></span>
+                        </li>
+                        <li id="tg-task-2" class="task-item">
+                            <a href="https://t.me/ASearnhubchat" target="_blank" class="task-link">Join Group @ASearnhubchat</a>
+                            <button class="action-button small-button check-task-button" data-task-id="tg_join_2" data-channel-link="https://t.me/ASearnhubchat">Check</button>
+                            <span class="task-status"></span>
+                        </li>
+                        <li id="tg-task-3" class="task-item">
+                            <a href="https://t.me/Scalpingargha" target="_blank" class="task-link">Join Channel @Scalpingargha</a>
+                            <button class="action-button small-button check-task-button" data-task-id="tg_join_3" data-channel-link="https://t.me/Scalpingargha">Check</button>
+                            <span class="task-status"></span>
+                        </li>
+                        <li id="tg-task-4" class="task-item">
+                            <a href="https://t.me/earningsceret" target="_blank" class="task-link">Join Channel @earningsceret</a>
+                            <button class="action-button small-button check-task-button" data-task-id="tg_join_4" data-channel-link="https://t.me/earningsceret">Check</button>
+                            <span class="task-status"></span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Referral Section -->
+            <section id="referral-section" class="app-section">
+                <div class="glass-card">
+                    <h3>Referral System</h3>
+                    <p class="info-text">Refer a friend and earn 5 AS points when they complete initial onboarding tasks! Your friend gets 2 AS points.</p>
+                    <div class="referral-code-display">
+                        <label for="referral-code-field">Your Referral Code:</label>
+                        <input type="text" id="referral-code-field" readonly>
+                        <button id="copy-referral-code-button" class="action-button secondary-button">Copy</button>
+                    </div>
+                    <div class="enter-referral-code-container">
+                        <label for="enter-referral-code-input">Enter Referral Code:</label>
+                        <input type="text" id="enter-referral-code-input" placeholder="e.g., ASGuttu4102H">
+                        <button id="submit-referral-code-button" class="action-button primary-button">Submit</button>
+                        <p id="referral-entry-message" class="info-text"></p>
+                    </div>
+                </div>
+                <div class="glass-card referral-stats-card">
+                    <h3>Your Referrals</h3>
+                    <p>Total Referrals: <span id="total-referrals-count">0</span></p>
+                    <ul id="referral-list" class="referral-list">
+                        <!-- Referrals will be dynamically inserted here -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Withdraw Section -->
+            <section id="withdraw-section" class="app-section">
+                <div class="glass-card">
+                    <h3>Withdraw AS Points</h3>
+                    <p class="info-text">Your Current Balance: <span id="withdraw-current-balance">0</span> AS Points</p>
+
+                    <div class="withdrawal-option" id="binance-option">
+                        <h4>Binance Pay ID Redemption</h4>
+                        <p>1320 AS Points = $0.9</p>
+                        <input type="text" id="binance-pay-id-input" placeholder="Enter your Binance Pay ID">
+                        <button id="withdraw-binance-button" class="action-button primary-button" disabled>Withdraw to Binance</button>
+                        <p id="binance-status-message" class="info-text"></p>
+                    </div>
+
+                    <div class="withdrawal-option" id="google-play-option">
+                        <h4>Google Play Redeem Code</h4>
+                        <p>710 AS Points = $0.5 (Code sent to your email)</p>
+                        <input type="email" id="google-play-email-input" placeholder="Enter your email address">
+                        <button id="withdraw-google-play-button" class="action-button primary-button" disabled>Withdraw Google Play</button>
+                        <p id="google-play-status-message" class="info-text"></p>
+                    </div>
+                </div>
+
+                <div class="glass-card withdrawal-history-card">
+                    <h3>Withdrawal History</h3>
+                    <ul id="withdrawal-history-list" class="history-list">
+                        <!-- Withdrawal history will be dynamically inserted here -->
+                        <li class="history-item pending">No withdrawals yet.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile-section" class="app-section">
+                <div class="glass-card profile-details-card">
+                    <h3>Your Profile</h3>
+                    <p><strong>Telegram Username:</strong> <span id="profile-username">N/A</span></p>
+                    <p><strong>Telegram User ID:</strong> <span id="profile-user-id">N/A</span></p>
+                    <p><strong>Profile Name:</strong> <span id="profile-profile-name">N/A</span></p>
+                    <p><strong>Join Date:</strong> <span id="profile-join-date">N/A</span></p>
+                    <p><strong>Current AS Points:</strong> <span id="profile-current-balance">0</span></p>
+                    <p><strong>Total Earned:</strong> <span id="profile-total-earned">0</span></p>
+                    <p><strong>Total Tasks Done:</strong> <span id="profile-total-tasks-done">0</span></p>
+                    <p><strong>Current Streak Day:</strong> <span id="profile-current-streak-day">0</span></p>
+                    <p><strong>Total Referrals:</strong> <span id="profile-total-referrals">0</span></p>
+                </div>
+
+                <div class="glass-card history-view-card">
+                    <h3>Activity History</h3>
+                    <div class="tab-buttons">
+                        <button class="tab-button active" data-history-type="tasks">Tasks</button>
+                        <button class="tab-button" data-history-type="withdrawals">Withdrawals</button>
+                    </div>
+                    <ul id="activity-history-list" class="history-list">
+                        <!-- Task/Withdrawal history will be dynamically inserted here -->
+                        <li class="history-item">No activity yet.</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card support-card">
+                    <h3>Support</h3>
+                    <p>🤝 <a href="https://t.me/ASearnhubchat" target="_blank">Help Center</a></p>
+                    <p>🧑‍💻 <a href="https://t.me/ASEarnHubSupport_bot" target="_blank">Customer Support Bot</a></p>
+                </div>
+            </section>
+        </main>
+
+        <nav class="bottom-navigation">
+            <button class="nav-item active" data-target="home-section">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Home</span>
+            </button>
+            <button class="nav-item" data-target="ads-section">
+                <span class="nav-icon">📺</span>
+                <span class="nav-text">Ads Task</span>
+            </button>
+            <button class="nav-item" data-target="tg-tasks-section">
+                <span class="nav-icon">📢</span>
+                <span class="nav-text">TG Tasks</span>
+            </button>
+            <button class="nav-item" data-target="referral-section">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Refer</span>
+            </button>
+            <button class="nav-item" data-target="withdraw-section">
+                <span class="nav-icon">💸</span>
+                <span class="nav-text">Withdraw</span>
+            </button>
+            <button class="nav-item" data-target="profile-section">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">Profile</span>
+            </button>
+            <div class="active-nav-indicator"></div>
+        </nav>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Load Firebase config and then the main script -->
+    <script src="firebaseConfig.js"></script>
+    <script src="script.js"></script>
+    <!-- Monetag SDK -->
+    <script src='//libtl.com/sdk.js' data-zone='9725833' data-sdk='show_9725833'></script>
+</body>
+</html>
